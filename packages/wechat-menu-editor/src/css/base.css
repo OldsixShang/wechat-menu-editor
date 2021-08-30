@@ -1,0 +1,7 @@
+.flex{display:flex;display:-webkit-flex;display:-webkit-box}
+.flex-one{flex:1;-webkit-flex:1;-webkit-box-flex:1}
+.flex-box{align-items:center;-webkit-align-items:center;-webkit-box-align:center}
+.flex-justify{justify-content:space-between;-webkit-justify-content:space-between;-webkit-box-pack:justify}
+.flex-center{-ms-flex-pack:center;justify-content:center;-webkit-box-pack:center;-webkit-justify-content:center}
+.flex-direction{flex-direction:column;-webkit-flex-direction:column;-webkit-box-orient:vertical}
+.display-row1{display:-webkit-flex;display:-webkit-box;overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical;word-break:break-all}
