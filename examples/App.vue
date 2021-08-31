@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <wechat-menu-editor :title="'大功告成'" />
+    <wechat-menu-editor :title="'公众号名称'" />
   </div>
 </template>
 

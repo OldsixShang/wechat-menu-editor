@@ -273,6 +273,9 @@ export default {
   line-height: 40px;
   color: #999999;
 }
+.wechat-menu-editor footer .menus .menu-item .menu-children .menu-item:nth-child(1){
+  border-radius: 4px 4px 0 0;
+}
 .wechat-menu-editor footer .menus .menu-item .menu-children .menu-item.selected {
   border: 1px solid #33cc5c;
   color: #33cc5c;
