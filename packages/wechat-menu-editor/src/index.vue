@@ -24,21 +24,21 @@
             <div
               v-for="menu in menus"
               v-bind:key="menu.id"
-              @click.stop="clickMenu(menu)"
+              @click.stop="clickRootMenu(menu)"
               class="menu-item"
-              :class="menu.selected ? 'selected' : ''"
+              :class="buildRootMenuClass(menu)"
             >
               <a>{{ menu.name }}</a>
               <div v-if="menu.selected" class="menu-children">
                 <div class="menu-items">
                   <div
-                    v-for="childmenu in menu.children"
-                    v-bind:key="childmenu.id"
-                    @click.stop="clickChildMenu(menu, childmenu)"
-                    :class="childmenu.selected ? 'selected' : ''"
+                    v-for="childMenu in menu.children"
+                    v-bind:key="childMenu.id"
+                    @click.stop="clickChildMenu(menu, childMenu)"
+                    :class="buildChildMenuClass(childMenu)"
                     class="menu-item"
                   >
-                    {{ childmenu.name }}
+                    {{ childMenu.name }}
                   </div>
                 </div>
                 <div class="triangle-down"></div>
@@ -52,6 +52,15 @@
 <script>
 import './css/icon.css'
 import './css/base.css'
+/**
+ * 菜单选中事件名称
+ */
+const EVENT_MENU_SELECTED = 'menuselected';
+/**
+ * 菜单类型
+ */
+const MENU_TYPE = { ADD: 'add', NORMAL:'normal'};
+
 export default {
   name: "WechatMenuEditor",
   props: {
@@ -61,8 +70,14 @@ export default {
     },
     menus: {
       type:Array,
-      default:function(){return [{ type: "add", name: "+添加菜单" }]}
+      default:function(){
+        return [{ type: MENU_TYPE.ADD, name: "+添加菜单" }];
+      }
     },
+    editable:{
+      type:Boolean,
+      default:true
+    }
   },
   data(){
       return {
@@ -73,13 +88,24 @@ export default {
     this.init();
   },
   methods: {
+    /**
+     * 初始化
+     */
     init() {
-      for (var i = 0; i < this.menus.length; i++) {
-        if (this.menus[i].selected) {
-          this.clickMenu(this.menus[i]);
-          for (var j = 0; j < this.menus[i].children.length; j++) {
-            if (this.menus[i].children[j].selected) {
-              this.clickChildMenu(this.menus[i], this.menus[i].children[j]);
+      let rootMenuLen = this.menus.length;
+      if(rootMenuLen == 0 && this.editable){
+        this.menus.push({ type: MENU_TYPE.ADD, name: "+添加菜单" });
+      }else if(this.editable && rootMenuLen < 3 && !this.menus.some(m=> m.type === MENU_TYPE.ADD)){
+        this.menus.push({ type: MENU_TYPE.ADD, name: "+" });
+      }
+      for (var i = 0; i < rootMenuLen; i++) {
+        let rootMenu = this.menus[i];
+        if (rootMenu.selected) {
+          this.clicRootkMenu(rootMenu);
+          for (var j = 0,clen = rootMenu.children.length; j < clen; j++) {
+            let childMenu = rootMenu.children[j];
+            if (childMenu.selected) {
+              this.clickChildMenu(rootMenu, childMenu);
               return;
             }
           }
@@ -87,43 +113,63 @@ export default {
         }
       }
     },
-    getDefaultMenu() {
-      var defaultMenu = { id: 0, type: "menu",name: "添加菜单", children: []};
+    /**
+     * 构建一级菜单样式
+     */
+    buildRootMenuClass(menu){
+      return (menu.type === MENU_TYPE.ADD ? 'menu-item-add':'') + (menu.selected ? 'selected' : '' ) + (!this.editable && menu.type===MENU_TYPE.ADD? 'hide':'');
+    },
+    /**
+     * 构建一级菜单样式
+     */
+    buildChildMenuClass(menu){
+      return (menu.selected ? 'selected' : '' ) + (!this.editable && menu.type===MENU_TYPE.ADD? 'hide':'');
+    },
+    /**
+     * 初始化一级菜单
+     */
+    buildDefaultRootMenu() {
+      var defaultMenu = { id: 0, type: MENU_TYPE.NORMAL ,name: "添加菜单", children: []};
       defaultMenu.id = new Date().getTime();
-      defaultMenu["selected"] = true;
-      defaultMenu.children.push({ type: "add", name: "+" });
+      defaultMenu.selected = true;
+      defaultMenu.children.push({ type: MENU_TYPE.ADD, name: "+" });
       return defaultMenu;
     },
-    clickMenu(currentMenu) {
-      for (var i = 0; i < this.menus.length; i++) {
-        this.menus[i].selected = false;
-      }
-      if (currentMenu.type == "add") {
-        var defaultMenu = this.getDefaultMenu();
-        this.selectedMenu = defaultMenu;
-        if (this.menus.length <= 2) {
-          this.menus.splice(this.menus.length - 1, 0, defaultMenu);
-          this.menus[this.menus.length - 1].name = "+";
+    /**
+     * 点击一级菜单
+     */
+    clickRootMenu(currentMenu) {
+      this.menus.forEach(menu=>{ menu.selected = false; });
+      if (currentMenu.type == MENU_TYPE.ADD) {
+        let newMenu = this.buildDefaultRootMenu();
+        let menuLen = this.menus.length;
+        if (menuLen <= 2) {
+          this.menus.splice(menuLen - 1, 0, newMenu);
+          this.menus[menuLen].name = "+";
         } else {
-          this.menus.splice(2, 0, defaultMenu);
+          this.menus.splice(2, 0, newMenu);
           this.menus.splice(3, 1);
         }
-        this.selectedMenu = defaultMenu;
+        this.selectedMenu = newMenu;
       } else {
         currentMenu.selected = true;
         this.selectedMenu = currentMenu;
       }
-      this.$emit("menuSelected",this.selectedMenu);
+      // 触发菜单选中事件
+      this.$emit(EVENT_MENU_SELECTED,this.selectedMenu);
     },
+    /**
+     * 点击子菜单
+     */
     clickChildMenu(parentMenu, currentMenu) {
       for (var i = 0; i < parentMenu.children.length; i++) {
         parentMenu.children[i].selected = false;
       }
-      if (currentMenu.type == "add") {
+      if (currentMenu.type == MENU_TYPE.ADD) {
         var defaultMenu = {
           id: new Date().getTime(),
           pid: parentMenu.id,
-          type: "menu",
+          type: MENU_TYPE.NORMAL,
           name: "添加子菜单",
           selected: true
         };
@@ -143,7 +189,8 @@ export default {
         currentMenu.selected = true;
         this.selectedMenu = currentMenu;
       }
-      this.$emit("menuSelected",this.selectedMenu);
+      // 触发菜单选中事件
+      this.$emit(EVENT_MENU_SELECTED,this.selectedMenu);
     },
   },
 };
@@ -247,6 +294,9 @@ export default {
 }
 .wechat-menu-editor footer .menus .menu-item.selected {
   border: 1px solid #33cc5c;
+}
+.wechat-menu-editor footer .menus .menu-item.hide{
+  display:none;
 }
 .wechat-menu-editor footer .menus .menu-item.menu-item-add {
   flex-grow: 1;

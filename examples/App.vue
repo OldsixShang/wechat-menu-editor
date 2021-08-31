@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <wechat-menu-editor :title="'公众号名称'" />
+    <wechat-menu-editor :title="'公众号名称'" :editable="true" :menus="menus" @menuselected="menuselected" />
   </div>
 </template>
 
@@ -8,7 +8,15 @@
 
 export default {
   name: 'App',
-  components: {
+  data(){
+    return {
+      menus:[],
+    }
+  },
+  methods:{
+    menuselected(menu){
+      console.log(menu);
+    }
   }
 }
 </script>
@@ -20,6 +28,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
