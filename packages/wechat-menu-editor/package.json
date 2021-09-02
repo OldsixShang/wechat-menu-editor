@@ -1,0 +1,18 @@
+{
+  "name": "wechat-menu-editor",
+  "version": "1.0.2",
+  "description": "微信公众号菜单编辑组件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue",
+    "wechat",
+    "menu",
+    "微信自定义菜单",
+    "微信"
+  ],
+  "author": "",
+  "license": "ISC"
+}
