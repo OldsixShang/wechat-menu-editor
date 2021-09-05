@@ -1,5 +1,5 @@
 <template>
-    <div class="wechat-menu-editor">
+    <div class="wechat-menu-editor" :style="'transform:scale('+scale+'%,'+scale+'%)'">
       <header>
           <!--header-->
           <div class="status-bar flex flex-justify">
@@ -77,6 +77,10 @@ export default {
     editable:{
       type:Boolean,
       default:true
+    },
+    scale:{
+      type:Number,
+      default:100
     }
   },
   data(){

@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <wechat-menu-editor :title="'公众号名称'" :editable="true" :menus="menus" @menuselected="menuselected" />
+    <wechat-menu-editor :title="'公众号名称'" 
+    :editable="true" 
+    :menus="menus" 
+    :scale="60"
+    @menuselected="menuselected" />
   </div>
 </template>
 

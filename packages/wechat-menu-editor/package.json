@@ -14,5 +14,9 @@
     "微信"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OldsixShang/wechat-menu-editor"
+  }
 }
