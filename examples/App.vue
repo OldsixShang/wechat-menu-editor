@@ -3,7 +3,7 @@
     <wechat-menu-editor :title="'公众号名称'" 
     :editable="true" 
     :menus="menus" 
-    :scale="60"
+    :scale="80"
     @menuselected="menuselected" />
   </div>
 </template>

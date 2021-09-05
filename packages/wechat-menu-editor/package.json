@@ -1,6 +1,6 @@
 {
   "name": "wechat-menu-editor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "微信公众号菜单编辑组件",
   "main": "index.js",
   "scripts": {
