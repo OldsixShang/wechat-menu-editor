@@ -55,6 +55,22 @@ import WechatMenuEditor from 'wechat-menu-editor'
  - editable 是否可编辑 `Boolen`
  - scale 缩放比例 `Number`
 
-## 预览
+ ### 事件
+ - menuselected 菜单选中事件
 
-![image.png](https://note.youdao.com/yws/res/1/WEBRESOURCE7a8d6de7045d9bffc7063e4221764e31)
+ ```
+ menuselected(menu){
+     // menu 为选中的菜单信息
+ }
+ ```
+
+## 预览
+-  无数据
+![image.png](/previews/preview-empty.png)
+
+- 一级菜单编辑
+![image.png](/previews/preview2.png)
+![image.png](/previews/preview3.png)
+
+- 二级菜单编辑
+![image.png](/previews/preview4.png)
