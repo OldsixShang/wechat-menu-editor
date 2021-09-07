@@ -66,11 +66,11 @@ import WechatMenuEditor from 'wechat-menu-editor'
 
 ## 预览
 -  无数据
-![image.png](/previews/preview-empty.png)
+-  ![image.png](/previews/preview-empty.png)
 
 - 一级菜单编辑
-![image.png](/previews/preview2.png)
-![image.png](/previews/preview3.png)
+- ![image.png](/previews/preview2.png)
+- ![image.png](/previews/preview3.png)
 
 - 二级菜单编辑
-![image.png](/previews/preview4.png)
+- ![image.png](/previews/preview4.png)
